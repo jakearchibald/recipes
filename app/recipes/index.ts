@@ -124,6 +124,7 @@ interface Ingredients {
 
 interface Recipe {
   ingredients: Ingredients;
+  steps?: () => Promise<{ default: string }>;
 }
 
 export const recipes: Record<string, Recipe> = {
@@ -138,6 +139,7 @@ export const recipes: Record<string, Recipe> = {
       Pepper: true,
       'Chillies (unit)': 3,
     },
+    steps: () => import('./steps/curry-noodle-soup.md'),
   },
   'Creamy pasta sauce': {
     ingredients: {
@@ -231,6 +233,7 @@ export const recipes: Record<string, Recipe> = {
       'Chicken stock (unit)': 2,
       'Light brown sugar (tbsp)': 1,
     },
+    steps: () => import('./steps/tom-yum-soup.md'),
   },
   'Chicken & Tarragon soup': {
     ingredients: {
