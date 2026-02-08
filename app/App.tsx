@@ -40,7 +40,7 @@ const App: FunctionalComponent = () => {
       const recipe = recipes[recipeName];
       if (!recipe) continue;
 
-      Object.entries(recipe).forEach(([ingredient, value]) => {
+      Object.entries(recipe.ingredients).forEach(([ingredient, value]) => {
         if (typeof value === 'number') {
           const currentValue = ingredients[ingredient];
           if (typeof currentValue === 'number') {
