@@ -1,4 +1,4 @@
-interface Recipe {
+interface Ingredients {
   // Vegetables
   'Onion (unit)'?: number;
   'Spring onion (unit)'?: number;
@@ -120,6 +120,10 @@ interface Recipe {
   'Simple syrup (tsp)'?: number;
   'Egg white (ml)'?: number;
   Bitters?: boolean;
+}
+
+interface Recipe {
+  ingredients: Ingredients;
 }
 
 export const recipes: Record<string, Recipe> = {
