@@ -123,12 +123,23 @@ interface Ingredients {
 }
 
 interface Recipe {
+  title: string;
   ingredients: Ingredients;
   steps?: () => Promise<{ default: string }>;
 }
 
-export const recipes: Record<string, Recipe> = {
-  'Curry noodle soup': {
+function generateSlug(title: string): string {
+  return title
+    .toLowerCase()
+    .replace(/[^\w\s-]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+    .trim();
+}
+
+const recipesArray: Recipe[] = [
+  {
+    title: 'Curry noodle soup',
     ingredients: {
       'Chinese curry blocks (serving)': 4,
       'Onion (unit)': 1,
@@ -141,7 +152,8 @@ export const recipes: Record<string, Recipe> = {
     },
     steps: () => import('./steps/curry-noodle-soup.md'),
   },
-  'Creamy pasta sauce': {
+  {
+    title: 'Creamy pasta sauce',
     ingredients: {
       'Pesto (g)': 190,
       'Onion (unit)': 1,
@@ -156,7 +168,8 @@ export const recipes: Record<string, Recipe> = {
       Pepper: true,
     },
   },
-  Frittata: {
+  {
+    title: 'Frittata',
     ingredients: {
       'Cumberland sausage meat (g)': 150,
       'Red pepper (unit)': 0.5,
@@ -168,7 +181,8 @@ export const recipes: Record<string, Recipe> = {
       'Chillies (unit)': 3,
     },
   },
-  'Halloumi stuffed chicken': {
+  {
+    title: 'Halloumi stuffed chicken',
     ingredients: {
       'Chicken breast (unit)': 2,
       'Halloumi (block)': 1,
@@ -178,7 +192,8 @@ export const recipes: Record<string, Recipe> = {
       Mayo: true,
     },
   },
-  'Thai basil stir fry': {
+  {
+    title: 'Thai basil stir fry',
     ingredients: {
       'Thai basil (pack)': 1,
       'Chicken (g)': 225,
@@ -191,7 +206,8 @@ export const recipes: Record<string, Recipe> = {
       'Jasmine rice (serving)': 2,
     },
   },
-  'Carrot & parsnip soup': {
+  {
+    title: 'Carrot & parsnip soup',
     ingredients: {
       'Curry powder': true,
       'Carrot (g)': 250,
@@ -204,7 +220,8 @@ export const recipes: Record<string, Recipe> = {
       'MSG (tsp)': 1,
     },
   },
-  'Carrot lentil & cumin soup': {
+  {
+    title: 'Carrot lentil & cumin soup',
     ingredients: {
       'Curry powder': true,
       'Carrot (g)': 400,
@@ -217,7 +234,8 @@ export const recipes: Record<string, Recipe> = {
       'MSG (tsp)': 1,
     },
   },
-  'Tom Yum soup': {
+  {
+    title: 'Tom Yum soup',
     ingredients: {
       'Chillies (unit)': 4,
       'Galangal paste (g)': 90,
@@ -235,7 +253,8 @@ export const recipes: Record<string, Recipe> = {
     },
     steps: () => import('./steps/tom-yum-soup.md'),
   },
-  'Chicken & Tarragon soup': {
+  {
+    title: 'Chicken & Tarragon soup',
     ingredients: {
       'Onion (unit)': 1,
       'Celery (stalk)': 3,
@@ -249,7 +268,8 @@ export const recipes: Record<string, Recipe> = {
       'MSG (tsp)': 1,
     },
   },
-  'Chicken and mushroom soup': {
+  {
+    title: 'Chicken and mushroom soup',
     ingredients: {
       'Chicken (g)': 200,
       'Mushroom (g)': 100,
@@ -259,7 +279,8 @@ export const recipes: Record<string, Recipe> = {
       'Chillies (unit)': 3,
     },
   },
-  'Chilli bean soup': {
+  {
+    title: 'Chilli bean soup',
     ingredients: {
       'Onion (unit)': 1,
       'Carrot (g)': 60,
@@ -270,7 +291,8 @@ export const recipes: Record<string, Recipe> = {
       'Vegetable stock (unit)': 2,
     },
   },
-  'Creamy beef and mushroom soup': {
+  {
+    title: 'Creamy beef and mushroom soup',
     ingredients: {
       'Sour cream (ml)': 100,
       'Steak mince (g)': 300,
@@ -282,7 +304,8 @@ export const recipes: Record<string, Recipe> = {
       'Onion (unit)': 1,
     },
   },
-  'Creamy mushroom soup': {
+  {
+    title: 'Creamy mushroom soup',
     ingredients: {
       'Mushroom (g)': 360,
       'Garlic (clove)': 3,
@@ -291,7 +314,8 @@ export const recipes: Record<string, Recipe> = {
       'Vegetable stock (unit)': 2,
     },
   },
-  'Lentil & bacon soup': {
+  {
+    title: 'Lentil & bacon soup',
     ingredients: {
       'Carrot (g)': 60,
       'Bacon (pack)': 1,
@@ -305,7 +329,8 @@ export const recipes: Record<string, Recipe> = {
       'Celery (stalk)': 1,
     },
   },
-  'Mushroom & chorizo soup': {
+  {
+    title: 'Mushroom & chorizo soup',
     ingredients: {
       'Garlic (clove)': 3,
       'Chorizo ring (unit)': 0.5,
@@ -318,7 +343,8 @@ export const recipes: Record<string, Recipe> = {
       Pepper: true,
     },
   },
-  'Red Pepper & chorizo soup': {
+  {
+    title: 'Red Pepper & chorizo soup',
     ingredients: {
       'Chorizo ring (unit)': 0.5,
       'Onion (unit)': 1,
@@ -328,7 +354,8 @@ export const recipes: Record<string, Recipe> = {
       'Chicken stock (unit)': 2,
     },
   },
-  'Roast vegetable soup': {
+  {
+    title: 'Roast vegetable soup',
     ingredients: {
       'Red pepper (unit)': 2,
       'Courgette (unit)': 3,
@@ -343,7 +370,8 @@ export const recipes: Record<string, Recipe> = {
       'Roasting herbs (pack)': 1,
     },
   },
-  'Seriously garlic chicken soup': {
+  {
+    title: 'Seriously garlic chicken soup',
     ingredients: {
       'Onion (unit)': 1,
       'Chicken (g)': 400,
@@ -354,7 +382,8 @@ export const recipes: Record<string, Recipe> = {
       'MSG (tsp)': 1,
     },
   },
-  'Thai red chicken soup': {
+  {
+    title: 'Thai red chicken soup',
     ingredients: {
       'Chicken (g)': 290,
       'Thai red curry paste (jar)': 1,
@@ -367,7 +396,8 @@ export const recipes: Record<string, Recipe> = {
       'Chicken stock (unit)': 2,
     },
   },
-  'Tom Kha Chicken Soup': {
+  {
+    title: 'Tom Kha Chicken Soup',
     ingredients: {
       'Chicken stock (unit)': 2,
       'Coconut milk (ml)': 350,
@@ -384,7 +414,8 @@ export const recipes: Record<string, Recipe> = {
       'Red curry paste (g)': 50,
     },
   },
-  'Amaretto sour (serves 1)': {
+  {
+    title: 'Amaretto sour (serves 1)',
     ingredients: {
       'Amaretto (ml)': 150,
       'Bourbon (ml)': 25,
@@ -393,21 +424,24 @@ export const recipes: Record<string, Recipe> = {
       'Egg white (ml)': 15,
     },
   },
-  'Aperol spritz (serves 1)': {
+  {
+    title: 'Aperol spritz (serves 1)',
     ingredients: {
       'Prosecco (ml)': 210,
       'Aperol (ml)': 140,
       'Lemonade (ml)': 70,
     },
   },
-  'Godfather (serves 1)': {
+  {
+    title: 'Godfather (serves 1)',
     ingredients: {
       'Whiskey (ml)': 60,
       'Amaretto (ml)': 20,
       Bitters: true,
     },
   },
-  'Chicken & bacon pasta': {
+  {
+    title: 'Chicken & bacon pasta',
     ingredients: {
       'Bacon (pack)': 1,
       'Chicken breast (unit)': 2,
@@ -416,7 +450,8 @@ export const recipes: Record<string, Recipe> = {
       'Tortellini (pack)': 1,
     },
   },
-  'Simple chicken & mushroom pasta': {
+  {
+    title: 'Simple chicken & mushroom pasta',
     ingredients: {
       'Chicken breast (unit)': 2,
       'Chillies (unit)': 3,
@@ -432,4 +467,8 @@ export const recipes: Record<string, Recipe> = {
       'Cajun seasoning': true,
     },
   },
-};
+];
+
+export const recipes: Record<string, Recipe> = Object.fromEntries(
+  recipesArray.map((recipe) => [generateSlug(recipe.title), recipe])
+);

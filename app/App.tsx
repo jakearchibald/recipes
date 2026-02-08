@@ -27,8 +27,8 @@ const App: FunctionalComponent = () => {
     if (!filter) {
       return Object.keys(recipes);
     }
-    return Object.keys(recipes).filter((name) =>
-      name.toLowerCase().includes(filter),
+    return Object.keys(recipes).filter((slug) =>
+      recipes[slug].title.toLowerCase().includes(filter),
     );
   });
 
@@ -94,7 +94,7 @@ const App: FunctionalComponent = () => {
 
   const handleCopyRecipes = async () => {
     const items = Array.from(selectedRecipes.value).map(
-      ([recipeName, count]) => `${recipeName} × ${count}`,
+      ([recipeSlug, count]) => `${recipes[recipeSlug].title} × ${count}`,
     );
     await navigator.clipboard.writeText(items.join('\n'));
   };
@@ -141,17 +141,18 @@ const App: FunctionalComponent = () => {
       </div>
       {filteredRecipes.value.length > 0 ? (
         <div class={styles.recipeList}>
-          {filteredRecipes.value.map((recipeName) => {
-            const count = selectedRecipes.value.get(recipeName) || 0;
+          {filteredRecipes.value.map((recipeSlug) => {
+            const count = selectedRecipes.value.get(recipeSlug) || 0;
+            const recipe = recipes[recipeSlug];
             return (
-              <div key={recipeName} class={styles.recipeItem}>
-                <span class={styles.recipeName}>{recipeName}</span>
+              <div key={recipeSlug} class={styles.recipeItem}>
+                <span class={styles.recipeName}>{recipe.title}</span>
                 <div class={styles.recipeControls}>
                   {count > 0 && (
                     <>
                       <button
                         class={styles.btnMinus}
-                        onClick={() => handleRemoveRecipe(recipeName)}
+                        onClick={() => handleRemoveRecipe(recipeSlug)}
                       >
                         −
                       </button>
@@ -160,7 +161,7 @@ const App: FunctionalComponent = () => {
                   )}
                   <button
                     class={styles.btnPlus}
-                    onClick={() => handleAddRecipe(recipeName)}
+                    onClick={() => handleAddRecipe(recipeSlug)}
                   >
                     +
                   </button>
@@ -178,26 +179,29 @@ const App: FunctionalComponent = () => {
           <h2>Selected Recipes</h2>
           <div class={styles.selectedRecipes}>
             <div class={styles.selectedList}>
-              {Array.from(selectedRecipes.value).map(([recipeName, count]) => (
-                <div key={recipeName} class={styles.selectedItem}>
-                  <span class={styles.recipeName}>{recipeName}</span>
-                  <div class={styles.recipeControls}>
-                    <button
-                      class={styles.btnMinus}
-                      onClick={() => handleRemoveRecipe(recipeName)}
-                    >
-                      −
-                    </button>
-                    <span class={styles.recipeCount}>{count}</span>
-                    <button
-                      class={styles.btnPlus}
-                      onClick={() => handleAddRecipe(recipeName)}
-                    >
-                      +
-                    </button>
+              {Array.from(selectedRecipes.value).map(([recipeSlug, count]) => {
+                const recipe = recipes[recipeSlug];
+                return (
+                  <div key={recipeSlug} class={styles.selectedItem}>
+                    <span class={styles.recipeName}>{recipe.title}</span>
+                    <div class={styles.recipeControls}>
+                      <button
+                        class={styles.btnMinus}
+                        onClick={() => handleRemoveRecipe(recipeSlug)}
+                      >
+                        −
+                      </button>
+                      <span class={styles.recipeCount}>{count}</span>
+                      <button
+                        class={styles.btnPlus}
+                        onClick={() => handleAddRecipe(recipeSlug)}
+                      >
+                        +
+                      </button>
+                    </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
             <button
               class={`${styles.actionButton} ${styles.copyButton}`}
