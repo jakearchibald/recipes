@@ -24,7 +24,7 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
 
-    "types": ["vite/client"],
+    "types": ["vite/client", "navigation-api-types", "urlpattern-polyfill"],
     "plugins": [
       {
         "name": "typescript-plugin-css-modules"

@@ -4,6 +4,7 @@ import preact from '@preact/preset-vite';
 import { markdown } from './lib/vite-plugin-markdown';
 
 export default defineConfig({
+  base: '/',
   plugins: [
     preact(),
     markdown(),
