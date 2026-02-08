@@ -4,6 +4,7 @@ import { useEffect, useMemo } from 'preact/hooks';
 import { recipes } from './recipes';
 import { loadAppState, saveAppState, clearAppState } from './storage';
 import type { StoredAppState } from './types';
+import styles from './styles.module.css';
 
 const App: FunctionalComponent = () => {
   const initialState = useMemo(() => loadAppState(), []);
@@ -109,13 +110,13 @@ const App: FunctionalComponent = () => {
   };
 
   return (
-    <div class="app">
+    <div class={styles.app}>
       <h1>Recipe Shopping List</h1>
 
-      <div class="filter-section">
+      <div class={styles.filterSection}>
         <input
           type="text"
-          class="filter-input"
+          class={styles.filterInput}
           placeholder="Filter recipes…"
           value={filterText.value}
           onInput={handleFilterChange}
@@ -123,13 +124,13 @@ const App: FunctionalComponent = () => {
       </div>
 
       <h2>Available Recipes</h2>
-      <div class="recipe-status">
+      <div class={styles.recipeStatus}>
         <span>
           {selectedRecipes.value.size} recipe
           {selectedRecipes.value.size !== 1 ? 's' : ''} selected
         </span>
         <button
-          class="action-button reset-button"
+          class={`${styles.actionButton} ${styles.resetButton}`}
           onClick={handleReset}
           style={{
             visibility: selectedRecipes.value.size > 0 ? 'visible' : 'hidden',
@@ -139,26 +140,26 @@ const App: FunctionalComponent = () => {
         </button>
       </div>
       {filteredRecipes.value.length > 0 ? (
-        <div class="recipe-list">
+        <div class={styles.recipeList}>
           {filteredRecipes.value.map((recipeName) => {
             const count = selectedRecipes.value.get(recipeName) || 0;
             return (
-              <div key={recipeName} class="recipe-item">
-                <span class="recipe-name">{recipeName}</span>
-                <div class="recipe-controls">
+              <div key={recipeName} class={styles.recipeItem}>
+                <span class={styles.recipeName}>{recipeName}</span>
+                <div class={styles.recipeControls}>
                   {count > 0 && (
                     <>
                       <button
-                        class="btn-minus"
+                        class={styles.btnMinus}
                         onClick={() => handleRemoveRecipe(recipeName)}
                       >
                         −
                       </button>
-                      <span class="recipe-count">{count}</span>
+                      <span class={styles.recipeCount}>{count}</span>
                     </>
                   )}
                   <button
-                    class="btn-plus"
+                    class={styles.btnPlus}
                     onClick={() => handleAddRecipe(recipeName)}
                   >
                     +
@@ -169,27 +170,27 @@ const App: FunctionalComponent = () => {
           })}
         </div>
       ) : (
-        <div class="empty-state">No recipes match your filter</div>
+        <div class={styles.emptyState}>No recipes match your filter</div>
       )}
 
       {selectedRecipes.value.size > 0 && (
         <>
           <h2>Selected Recipes</h2>
-          <div class="selected-recipes">
-            <div class="selected-list">
+          <div class={styles.selectedRecipes}>
+            <div class={styles.selectedList}>
               {Array.from(selectedRecipes.value).map(([recipeName, count]) => (
-                <div key={recipeName} class="selected-item">
-                  <span class="recipe-name">{recipeName}</span>
-                  <div class="recipe-controls">
+                <div key={recipeName} class={styles.selectedItem}>
+                  <span class={styles.recipeName}>{recipeName}</span>
+                  <div class={styles.recipeControls}>
                     <button
-                      class="btn-minus"
+                      class={styles.btnMinus}
                       onClick={() => handleRemoveRecipe(recipeName)}
                     >
                       −
                     </button>
-                    <span class="recipe-count">{count}</span>
+                    <span class={styles.recipeCount}>{count}</span>
                     <button
-                      class="btn-plus"
+                      class={styles.btnPlus}
                       onClick={() => handleAddRecipe(recipeName)}
                     >
                       +
@@ -199,7 +200,7 @@ const App: FunctionalComponent = () => {
               ))}
             </div>
             <button
-              class="action-button copy-button"
+              class={`${styles.actionButton} ${styles.copyButton}`}
               onClick={handleCopyRecipes}
             >
               Copy recipes
@@ -207,20 +208,20 @@ const App: FunctionalComponent = () => {
           </div>
 
           <h2>Shopping List</h2>
-          <div class="shopping-list">
-            <div class="ingredient-list">
+          <div class={styles.shoppingList}>
+            <div class={styles.ingredientList}>
               {shoppingList.value.map(([ingredient, amount]) => (
-                <div key={ingredient} class="ingredient-item">
-                  <span class="ingredient-name">{ingredient}</span>
+                <div key={ingredient} class={styles.ingredientItem}>
+                  <span class={styles.ingredientName}>{ingredient}</span>
                   {typeof amount === 'number' && (
-                    <span class="ingredient-amount">× {amount}</span>
+                    <span class={styles.ingredientAmount}>× {amount}</span>
                   )}
                 </div>
               ))}
             </div>
           </div>
-          <div class="action-buttons">
-            <button class="action-button copy-button" onClick={handleCopy}>
+          <div class={styles.actionButtons}>
+            <button class={`${styles.actionButton} ${styles.copyButton}`} onClick={handleCopy}>
               Copy shopping list
             </button>
           </div>

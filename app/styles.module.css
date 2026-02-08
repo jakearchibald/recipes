@@ -24,11 +24,11 @@ h2 {
   margin-bottom: 1rem;
 }
 
-.filter-section {
+.filterSection {
   margin-bottom: 2rem;
 }
 
-.filter-input {
+.filterInput {
   width: 100%;
   padding: 12px;
   font-size: 16px;
@@ -41,7 +41,7 @@ h2 {
   }
 }
 
-.recipe-status {
+.recipeStatus {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -51,13 +51,13 @@ h2 {
   color: #666;
 }
 
-.recipe-list {
+.recipeList {
   display: grid;
   gap: 8px;
   margin-bottom: 2rem;
 }
 
-.recipe-item {
+.recipeItem {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -72,22 +72,22 @@ h2 {
   }
 }
 
-.recipe-name {
+.recipeName {
   flex: 1;
   font-size: 16px;
 }
 
-.selected-recipes {
+.selectedRecipes {
   margin-bottom: 2rem;
 }
 
-.selected-list {
+.selectedList {
   display: grid;
   gap: 8px;
   margin-bottom: 1rem;
 }
 
-.selected-item {
+.selectedItem {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -98,39 +98,39 @@ h2 {
   border-radius: 4px;
 }
 
-.shopping-list {
+.shoppingList {
   margin-bottom: 2rem;
 }
 
-.ingredient-list {
+.ingredientList {
   display: grid;
   gap: 4px;
 }
 
-.ingredient-item {
+.ingredientItem {
   padding: 8px 12px;
   background-color: #f9f9f9;
   border-left: 3px solid #4a90e2;
   border-radius: 2px;
 }
 
-.ingredient-name {
+.ingredientName {
   font-weight: 500;
 }
 
-.ingredient-amount {
+.ingredientAmount {
   color: #666;
   margin-left: 8px;
 }
 
-.action-buttons {
+.actionButtons {
   margin-top: 2rem;
   display: flex;
   gap: 12px;
   flex-wrap: wrap;
 }
 
-.action-button {
+.actionButton {
   padding: 12px 24px;
   font-size: 16px;
   color: white;
@@ -140,7 +140,7 @@ h2 {
   transition: background-color 0.2s;
 }
 
-.copy-button {
+.copyButton {
   background-color: #28a745;
 
   &:hover {
@@ -153,7 +153,7 @@ h2 {
 }
 
 
-.reset-button {
+.resetButton {
   background-color: #dc3545;
 
   &:hover {
@@ -165,21 +165,21 @@ h2 {
   }
 }
 
-.empty-state {
+.emptyState {
   padding: 20px;
   text-align: center;
   color: #666;
   font-style: italic;
 }
 
-.recipe-controls {
+.recipeControls {
   display: flex;
   align-items: center;
   gap: 8px;
 }
 
-.btn-plus,
-.btn-minus {
+.btnPlus,
+.btnMinus {
   width: 32px;
   height: 32px;
   border: 2px solid #4a90e2;
@@ -206,7 +206,7 @@ h2 {
   }
 }
 
-.recipe-count {
+.recipeCount {
   min-width: 24px;
   text-align: center;
   font-weight: 600;
