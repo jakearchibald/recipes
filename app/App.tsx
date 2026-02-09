@@ -4,32 +4,29 @@ import { useEffect } from 'preact/hooks';
 import ShoppingList from './ShoppingList';
 import RecipeDetail from './RecipeDetail';
 
-interface RouteState {
-  path: string;
-  params: Record<string, string>;
-}
+type Route = { type: 'home' } | { type: 'recipe'; slug: string };
 
 const App: FunctionalComponent = () => {
-  const route = useSignal<RouteState>({ path: '/', params: {} });
+  const route = useSignal<Route>({ type: 'home' });
 
   useEffect(() => {
     const recipePattern = new URLPattern({ pathname: '/recipes/:slug' });
 
     const updateRoute = () => {
-      const url = location.href;
+      const url = navigation!.currentEntry!.url!;
 
       // Match /recipes/:slug
       const recipeMatch = recipePattern.exec(url);
       if (recipeMatch) {
         route.value = {
-          path: '/recipes/:slug',
-          params: recipeMatch.pathname.groups as Record<string, string>,
+          type: 'recipe',
+          slug: recipeMatch.pathname.groups.slug as string,
         };
         return;
       }
 
       // Default to home
-      route.value = { path: '/', params: {} };
+      route.value = { type: 'home' };
     };
 
     // Initial route
@@ -47,16 +44,16 @@ const App: FunctionalComponent = () => {
       });
     };
 
-    self.navigation!.addEventListener('navigate', handleNavigate);
+    navigation!.addEventListener('navigate', handleNavigate);
 
     return () => {
-      self.navigation!.removeEventListener('navigate', handleNavigate);
+      navigation!.removeEventListener('navigate', handleNavigate);
     };
   }, []);
 
   // Render based on route
-  if (route.value.path === '/recipes/:slug') {
-    return <RecipeDetail slug={route.value.params.slug} />;
+  if (route.value.type === 'recipe') {
+    return <RecipeDetail slug={route.value.slug} />;
   }
 
   return <ShoppingList />;

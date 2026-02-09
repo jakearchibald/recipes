@@ -77,10 +77,21 @@ const RecipeDetail: FunctionalComponent<RecipeDetailProps> = ({ slug }) => {
       {error.value && <div class={styles.errorMessage}>{error.value}</div>}
 
       {!loading.value && !error.value && (
-        <div
-          class={styles.recipeContent}
-          dangerouslySetInnerHTML={{ __html: recipeHtml.value }}
-        />
+        <>
+          <div
+            class={styles.recipeContent}
+            dangerouslySetInnerHTML={{ __html: recipeHtml.value }}
+          />
+          <p class={styles.editLink}>
+            <a
+              href={`https://github.com/jakearchibald/recipes/edit/main/app/recipes/steps/${slug}.md`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Edit on GitHub
+            </a>
+          </p>
+        </>
       )}
     </div>
   );

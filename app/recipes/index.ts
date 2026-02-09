@@ -125,6 +125,9 @@ interface Ingredients {
 interface Recipe {
   title: string;
   ingredients: Ingredients;
+}
+
+interface EnhancedRecipe extends Recipe {
   steps?: () => Promise<{ default: string }>;
 }
 
@@ -150,7 +153,6 @@ const recipesArray: Recipe[] = [
       Pepper: true,
       'Chillies (unit)': 3,
     },
-    steps: () => import('./steps/curry-noodle-soup.md'),
   },
   {
     title: 'Creamy pasta sauce',
@@ -251,7 +253,6 @@ const recipesArray: Recipe[] = [
       'Chicken stock (unit)': 2,
       'Light brown sugar (tbsp)': 1,
     },
-    steps: () => import('./steps/tom-yum-soup.md'),
   },
   {
     title: 'Chicken & Tarragon soup',
@@ -469,6 +470,21 @@ const recipesArray: Recipe[] = [
   },
 ];
 
-export const recipes: Record<string, Recipe> = Object.fromEntries(
-  recipesArray.map((recipe) => [generateSlug(recipe.title), recipe])
+const steps = import.meta.glob<{ default: string }>('./steps/*.md');
+
+export const recipes: Record<string, EnhancedRecipe> = Object.fromEntries(
+  recipesArray.map((recipe) => {
+    const enhancedRecipe: EnhancedRecipe = {
+      ...recipe,
+    };
+
+    const slug = generateSlug(recipe.title);
+    const stepsPath = `./steps/${slug}.md`;
+
+    if (steps[stepsPath]) {
+      enhancedRecipe.steps = steps[stepsPath];
+    }
+
+    return [generateSlug(recipe.title), enhancedRecipe];
+  }),
 );
