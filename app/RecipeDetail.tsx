@@ -4,6 +4,7 @@ import { useEffect, useRef } from 'preact/hooks';
 import { recipes } from './recipes';
 import styles from './styles.module.css';
 import IngredientItem from './IngredientItem';
+import RecipeLayout from './RecipeLayout';
 
 interface RecipeDetailProps {
   slug: string;
@@ -78,25 +79,14 @@ const RecipeDetail: FunctionalComponent<RecipeDetailProps> = ({ slug }) => {
 
   if (!recipe) {
     return (
-      <div class={styles.app}>
-        <div class={styles.recipeDetailHeader}>
-          <a href="/" class={styles.backLink}>
-            ← Back to Shopping List
-          </a>
-        </div>
+      <RecipeLayout>
         <div class={styles.errorMessage}>Recipe not found</div>
-      </div>
+      </RecipeLayout>
     );
   }
 
   return (
-    <div class={styles.app}>
-      <div class={styles.recipeDetailHeader}>
-        <a href="/" class={styles.backLink}>
-          ← Back to Shopping List
-        </a>
-      </div>
-
+    <RecipeLayout>
       <h1>{recipe.title}</h1>
 
       <div class={styles.wakeLockControl}>
@@ -144,7 +134,7 @@ const RecipeDetail: FunctionalComponent<RecipeDetailProps> = ({ slug }) => {
           </p>
         </>
       )}
-    </div>
+    </RecipeLayout>
   );
 };
 
