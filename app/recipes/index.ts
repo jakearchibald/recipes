@@ -212,7 +212,7 @@ const recipesArray: Recipe[] = [
     title: 'Carrot & parsnip soup',
     ingredients: {
       'Curry powder': true,
-      'Carrot (g)': 250,
+      'Carrot (g)': 300,
       'Parsnip (g)': 150,
       'Chillies (unit)': 3,
       'Milk (ml)': 125,
