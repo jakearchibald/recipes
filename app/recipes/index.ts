@@ -460,6 +460,8 @@ const recipesArray: Recipe[] = [
       'Pasta (g)': 200,
       'Mustard powder (tsp)': 0.5,
       'Double cream (ml)': 150,
+      'Chicken stock (unit)': 1,
+      'Garlic (clove)': 3,
       Butter: true,
       'MSG (tsp)': 0.5,
       'Onion (unit)': 1,
