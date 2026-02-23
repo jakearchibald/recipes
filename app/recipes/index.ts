@@ -359,7 +359,7 @@ const recipesArray: Recipe[] = [
     title: 'Roast vegetable soup',
     ingredients: {
       'Red pepper (unit)': 2,
-      'Courgette (unit)': 3,
+      'Courgette (unit)': 1,
       'Carrot (g)': 120,
       'Parsnip (g)': 160,
       'Tomato (unit)': 2,
