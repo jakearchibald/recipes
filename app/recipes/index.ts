@@ -375,7 +375,7 @@ const recipesArray: Recipe[] = [
     title: 'Seriously garlic chicken soup',
     ingredients: {
       'Onion (unit)': 1,
-      'Chicken (g)': 400,
+      'Chicken (g)': 600,
       'Garlic (clove)': 40,
       'Lime (juice)': 1,
       'Chillies (unit)': 3,
@@ -386,7 +386,7 @@ const recipesArray: Recipe[] = [
   {
     title: 'Thai red chicken soup',
     ingredients: {
-      'Chicken (g)': 290,
+      'Chicken (g)': 350,
       'Thai red curry paste (jar)': 1,
       'Lime (juice)': 1,
       'Lemongrass (stalk)': 1,
