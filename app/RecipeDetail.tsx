@@ -1,17 +1,24 @@
-import type { FunctionalComponent } from 'preact';
+import type { FunctionalComponent, ComponentType } from 'preact';
 import { useSignal } from '@preact/signals';
 import { useEffect, useRef } from 'preact/hooks';
 import { recipes } from './recipes';
 import styles from './styles.module.css';
 import IngredientItem from './IngredientItem';
 import RecipeLayout from './RecipeLayout';
+import Ing from './components/Ing';
+
+const mdxComponents = { Ing };
+
+declare global {
+  type MDXProvidedComponents = typeof mdxComponents;
+}
 
 interface RecipeDetailProps {
   slug: string;
 }
 
 const RecipeDetail: FunctionalComponent<RecipeDetailProps> = ({ slug }) => {
-  const recipeHtml = useSignal<string>('');
+  const StepsComponent = useSignal<ComponentType<{ components?: Record<string, ComponentType<any>> }> | null>(null);
   const loading = useSignal<boolean>(true);
   const error = useSignal<string | null>(null);
   const wakeLockEnabled = useSignal<boolean>(false);
@@ -29,7 +36,7 @@ const RecipeDetail: FunctionalComponent<RecipeDetailProps> = ({ slug }) => {
     recipe
       .steps()
       .then((module) => {
-        recipeHtml.value = module.default;
+        StepsComponent.value = module.default as ComponentType;
         loading.value = false;
       })
       .catch((err) => {
@@ -52,18 +59,15 @@ const RecipeDetail: FunctionalComponent<RecipeDetailProps> = ({ slug }) => {
   const toggleWakeLock = async () => {
     try {
       if (wakeLockEnabled.value) {
-        // Release the wake lock
         if (wakeLockRef.current) {
           await wakeLockRef.current.release();
           wakeLockRef.current = null;
         }
         wakeLockEnabled.value = false;
       } else {
-        // Request a wake lock
         wakeLockRef.current = await navigator.wakeLock.request('screen');
         wakeLockEnabled.value = true;
 
-        // Handle wake lock release (e.g., when tab becomes inactive)
         wakeLockRef.current.addEventListener('release', () => {
           wakeLockEnabled.value = false;
           wakeLockRef.current = null;
@@ -102,12 +106,8 @@ const RecipeDetail: FunctionalComponent<RecipeDetailProps> = ({ slug }) => {
 
       <h2>Ingredients</h2>
       <div class={styles.ingredientList}>
-        {Object.entries(recipe.ingredients).map(([ingredient, amount]) => (
-          <IngredientItem
-            key={ingredient}
-            ingredient={ingredient}
-            amount={amount}
-          />
+        {recipe.ingredients.map((ingredient) => (
+          <IngredientItem key={ingredient.name + ingredient.unit} ingredient={ingredient} />
         ))}
       </div>
 
@@ -117,15 +117,14 @@ const RecipeDetail: FunctionalComponent<RecipeDetailProps> = ({ slug }) => {
 
       {error.value && <div class={styles.errorMessage}>{error.value}</div>}
 
-      {!loading.value && !error.value && (
+      {!loading.value && !error.value && StepsComponent.value && (
         <>
-          <div
-            class={styles.recipeContent}
-            dangerouslySetInnerHTML={{ __html: recipeHtml.value }}
-          />
+          <div class={styles.recipeContent}>
+            <StepsComponent.value components={mdxComponents} />
+          </div>
           <p class={styles.editLink}>
             <a
-              href={`https://github.com/jakearchibald/recipes/edit/main/app/recipes/steps/${slug}.md`}
+              href={`https://github.com/jakearchibald/recipes/edit/main/app/recipes/steps/${slug}.mdx`}
               target="_blank"
               rel="noopener noreferrer"
             >

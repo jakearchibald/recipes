@@ -3,7 +3,8 @@ import { useSignal, useComputed } from '@preact/signals';
 import { useEffect, useMemo } from 'preact/hooks';
 import { recipes } from './recipes';
 import { loadAppState, saveAppState, clearAppState } from './storage';
-import type { StoredAppState } from './types';
+import type { StoredAppState, Ingredient } from './types';
+import { getUnitText } from './types';
 import styles from './styles.module.css';
 import IngredientItem from './IngredientItem';
 
@@ -35,27 +36,27 @@ const ShoppingList: FunctionalComponent = () => {
 
   // Compute shopping list
   const shoppingList = useComputed(() => {
-    const ingredients: Record<string, number | boolean> = {};
+    const merged = new Map<string, Ingredient>();
 
     for (const [recipeName, count] of selectedRecipes.value) {
       const recipe = recipes[recipeName];
       if (!recipe) continue;
 
-      Object.entries(recipe.ingredients).forEach(([ingredient, value]) => {
-        if (typeof value === 'number') {
-          const currentValue = ingredients[ingredient];
-          if (typeof currentValue === 'number') {
-            ingredients[ingredient] = currentValue + value * count;
-          } else {
-            ingredients[ingredient] = value * count;
-          }
-        } else if (typeof value === 'boolean' && value) {
-          ingredients[ingredient] = true;
+      for (const ing of recipe.ingredients) {
+        const key = `${ing.name}|${ing.unit ?? ''}`;
+        const existing = merged.get(key);
+        if (existing?.quantity != null && ing.quantity != null) {
+          merged.set(key, {
+            ...ing,
+            quantity: existing.quantity + ing.quantity * count,
+          });
+        } else if (!existing) {
+          merged.set(key, ing.quantity != null ? { ...ing, quantity: ing.quantity * count } : ing);
         }
-      });
+      }
     }
 
-    return Object.entries(ingredients).sort(([a], [b]) => a.localeCompare(b));
+    return [...merged.values()].sort((a, b) => a.name.localeCompare(b.name));
   });
 
   const handleFilterChange = (e: Event) => {
@@ -101,11 +102,13 @@ const ShoppingList: FunctionalComponent = () => {
   };
 
   const handleCopy = async () => {
-    const items = shoppingList.value.map(([ingredient, amount]) => {
-      if (typeof amount === 'number') {
-        return `${ingredient} × ${amount}`;
+    const items = shoppingList.value.map((ing) => {
+      if (ing.quantity != null && getUnitText(ing.unit, ing.quantity)) {
+        return `${ing.name} × ${ing.quantity}${getUnitText(ing.unit, ing.quantity)}`;
+      } else if (ing.quantity != null) {
+        return `${ing.name} × ${ing.quantity}`;
       }
-      return ingredient;
+      return ing.name;
     });
     await navigator.clipboard.writeText(items.join('\n'));
   };
@@ -145,16 +148,11 @@ const ShoppingList: FunctionalComponent = () => {
           {filteredRecipes.value.map((recipeSlug) => {
             const count = selectedRecipes.value.get(recipeSlug) || 0;
             const recipe = recipes[recipeSlug];
-            const hasSteps = !!recipe.steps;
             return (
               <div key={recipeSlug} class={styles.recipeItem}>
-                {hasSteps ? (
-                  <a href={`/recipes/${recipeSlug}`} class={styles.recipeLink}>
-                    {recipe.title}
-                  </a>
-                ) : (
-                  <span class={styles.recipeName}>{recipe.title}</span>
-                )}
+                <a href={`/recipes/${recipeSlug}`} class={styles.recipeLink}>
+                  {recipe.title}
+                </a>
                 <div class={styles.recipeControls}>
                   {count > 0 && (
                     <>
@@ -189,19 +187,14 @@ const ShoppingList: FunctionalComponent = () => {
             <div class={styles.selectedList}>
               {Array.from(selectedRecipes.value).map(([recipeSlug, count]) => {
                 const recipe = recipes[recipeSlug];
-                const hasSteps = !!recipe.steps;
                 return (
                   <div key={recipeSlug} class={styles.selectedItem}>
-                    {hasSteps ? (
-                      <a
-                        href={`/recipes/${recipeSlug}`}
-                        class={styles.recipeLink}
-                      >
-                        {recipe.title}
-                      </a>
-                    ) : (
-                      <span class={styles.recipeName}>{recipe.title}</span>
-                    )}
+                    <a
+                      href={`/recipes/${recipeSlug}`}
+                      class={styles.recipeLink}
+                    >
+                      {recipe.title}
+                    </a>
                     <div class={styles.recipeControls}>
                       <button
                         class={styles.btnMinus}
@@ -232,11 +225,10 @@ const ShoppingList: FunctionalComponent = () => {
           <h2>Shopping List</h2>
           <div class={styles.shoppingList}>
             <div class={styles.ingredientList}>
-              {shoppingList.value.map(([ingredient, amount]) => (
+              {shoppingList.value.map((ingredient) => (
                 <IngredientItem
-                  key={ingredient}
+                  key={ingredient.name + ingredient.unit}
                   ingredient={ingredient}
-                  amount={amount}
                 />
               ))}
             </div>

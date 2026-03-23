@@ -31,5 +31,9 @@
       }
     ]
   },
-  "include": ["app"]
+  "include": ["app"],
+  "mdx": {
+    // Enable strict type checking in MDX files.
+    "checkMdx": true
+  }
 }
