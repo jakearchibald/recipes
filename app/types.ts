@@ -98,7 +98,7 @@ export const INGREDIENTS = [
   { name: 'Granulated sugar', unit: 'ml' },
 
   // Citrus
-  { name: 'Lime juice' },
+  { name: 'Lime juice', unit: null },
 
   // Other
   { name: 'Eggs', unit: null },
@@ -121,7 +121,7 @@ export const INGREDIENTS = [
   { name: 'Bitters', unit: null },
 
   { name: 'Water', unit: 'tbsp' },
-] as const;
+] as const satisfies ReadonlyArray<{ name: string; unit: string | null }>;
 
 const unitText: Partial<
   Record<Exclude<IngredientUnit, null>, { singular: string; plural?: string }>
