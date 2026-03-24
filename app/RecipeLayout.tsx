@@ -10,7 +10,7 @@ const RecipeLayout: FunctionalComponent<RecipeLayoutProps> = ({ children }) => {
     <div class={styles.app}>
       <div class={styles.recipeDetailHeader}>
         <a href="/" class={styles.backLink}>
-          ← Back to Shopping List
+          ← Back to Recipe List
         </a>
       </div>
       {children}

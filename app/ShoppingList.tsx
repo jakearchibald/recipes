@@ -115,7 +115,7 @@ const ShoppingList: FunctionalComponent = () => {
 
   return (
     <div class={styles.app}>
-      <h1>Recipe Shopping List</h1>
+      <h1>Recipes</h1>
 
       <div class={styles.filterSection}>
         <input
