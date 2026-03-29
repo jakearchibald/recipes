@@ -1,7 +1,7 @@
 import type { FunctionalComponent } from 'preact';
 import { useSignal, useComputed } from '@preact/signals';
 import { useEffect, useMemo } from 'preact/hooks';
-import { recipes } from './recipes';
+import { recipes, categories } from './recipes';
 import { loadAppState, saveAppState, clearAppState } from './storage';
 import type { StoredAppState, Ingredient } from './types';
 import { copyShoppingList } from './copyShoppingList';
@@ -23,15 +23,18 @@ const ShoppingList: FunctionalComponent = () => {
     saveAppState(state);
   }, [selectedRecipes.value]);
 
-  // Compute filtered recipes
-  const filteredRecipes = useComputed(() => {
+  // Compute filtered categories (omit categories with no matches)
+  const filteredCategories = useComputed(() => {
     const filter = filterText.value.toLowerCase();
-    if (!filter) {
-      return Object.keys(recipes);
-    }
-    return Object.keys(recipes).filter((slug) =>
-      recipes[slug].title.toLowerCase().includes(filter),
-    );
+    return categories
+      .map((category) => ({
+        ...category,
+        recipes: category.recipes.filter(
+          (slug) =>
+            !filter || recipes[slug].title.toLowerCase().includes(filter),
+        ),
+      }))
+      .filter((category) => category.recipes.length > 0);
   });
 
   // Compute shopping list
@@ -42,16 +45,21 @@ const ShoppingList: FunctionalComponent = () => {
       const recipe = recipes[recipeName];
       if (!recipe) continue;
 
-      for (const ing of recipe.ingredients) {
-        const key = `${ing.name}|${ing.unit ?? ''}`;
+      for (const ingredient of recipe.ingredients) {
+        const key = `${ingredient.name}|${ingredient.unit ?? ''}`;
         const existing = merged.get(key);
-        if (existing?.quantity != null && ing.quantity != null) {
+        if (existing?.quantity != null && ingredient.quantity != null) {
           merged.set(key, {
-            ...ing,
-            quantity: existing.quantity + ing.quantity * count,
+            ...ingredient,
+            quantity: existing.quantity + ingredient.quantity * count,
           });
         } else if (!existing) {
-          merged.set(key, ing.quantity != null ? { ...ing, quantity: ing.quantity * count } : ing);
+          merged.set(
+            key,
+            ingredient.quantity != null
+              ? { ...ingredient, quantity: ingredient.quantity * count }
+              : ingredient,
+          );
         }
       }
     }
@@ -133,38 +141,48 @@ const ShoppingList: FunctionalComponent = () => {
           Reset All
         </button>
       </div>
-      {filteredRecipes.value.length > 0 ? (
+      {filteredCategories.value.length > 0 ? (
         <div class={styles.recipeList}>
-          {filteredRecipes.value.map((recipeSlug) => {
-            const count = selectedRecipes.value.get(recipeSlug) || 0;
-            const recipe = recipes[recipeSlug];
-            return (
-              <div key={recipeSlug} class={styles.recipeItem}>
-                <a href={`/recipes/${recipeSlug}/`} class={styles.recipeLink}>
-                  {recipe.title}
-                </a>
-                <div class={styles.recipeControls}>
-                  {count > 0 && (
-                    <>
+          {filteredCategories.value.map((cat) => (
+            <>
+              <h3 key={cat.slug} class={styles.categoryHeading}>
+                {cat.title}
+              </h3>
+              {cat.recipes.map((recipeSlug) => {
+                const count = selectedRecipes.value.get(recipeSlug) || 0;
+                const recipe = recipes[recipeSlug];
+                return (
+                  <div key={recipeSlug} class={styles.recipeItem}>
+                    <a
+                      href={`/recipes/${recipe.categorySlug}/${recipeSlug}/`}
+                      class={styles.recipeLink}
+                    >
+                      {recipe.title}
+                    </a>
+                    <div class={styles.recipeControls}>
+                      {count > 0 && (
+                        <>
+                          <button
+                            class={styles.btnMinus}
+                            onClick={() => handleRemoveRecipe(recipeSlug)}
+                          >
+                            −
+                          </button>
+                          <span class={styles.recipeCount}>{count}</span>
+                        </>
+                      )}
                       <button
-                        class={styles.btnMinus}
-                        onClick={() => handleRemoveRecipe(recipeSlug)}
+                        class={styles.btnPlus}
+                        onClick={() => handleAddRecipe(recipeSlug)}
                       >
-                        −
+                        +
                       </button>
-                      <span class={styles.recipeCount}>{count}</span>
-                    </>
-                  )}
-                  <button
-                    class={styles.btnPlus}
-                    onClick={() => handleAddRecipe(recipeSlug)}
-                  >
-                    +
-                  </button>
-                </div>
-              </div>
-            );
-          })}
+                    </div>
+                  </div>
+                );
+              })}
+            </>
+          ))}
         </div>
       ) : (
         <div class={styles.emptyState}>No recipes match your filter</div>
@@ -180,7 +198,7 @@ const ShoppingList: FunctionalComponent = () => {
                 return (
                   <div key={recipeSlug} class={styles.selectedItem}>
                     <a
-                      href={`/recipes/${recipeSlug}/`}
+                      href={`/recipes/${recipe.categorySlug}/${recipeSlug}/`}
                       class={styles.recipeLink}
                     >
                       {recipe.title}

@@ -24,10 +24,14 @@ declare global {
 }
 
 interface RecipeDetailProps {
+  categorySlug: string;
   slug: string;
 }
 
-const RecipeDetail: FunctionalComponent<RecipeDetailProps> = ({ slug }) => {
+const RecipeDetail: FunctionalComponent<RecipeDetailProps> = ({
+  categorySlug,
+  slug,
+}) => {
   const StepsComponent = useSignal<ComponentType<{
     components?: Record<string, ComponentType<any> | string>;
   }> | null>(null);
@@ -119,7 +123,10 @@ const RecipeDetail: FunctionalComponent<RecipeDetailProps> = ({ slug }) => {
       <h2>Ingredients</h2>
       <div class={styles.ingredientList}>
         {recipe.ingredients.map((ingredient) => (
-          <IngredientItem key={ingredient.name + ingredient.unit} ingredient={ingredient} />
+          <IngredientItem
+            key={ingredient.name + ingredient.unit}
+            ingredient={ingredient}
+          />
         ))}
       </div>
       <div class={styles.actionButtons}>
@@ -144,7 +151,7 @@ const RecipeDetail: FunctionalComponent<RecipeDetailProps> = ({ slug }) => {
           </div>
           <p class={styles.editLink}>
             <a
-              href={`https://github.com/jakearchibald/recipes/edit/main/app/recipes/steps/${slug}.mdx`}
+              href={`https://github.com/jakearchibald/recipes/edit/main/app/recipes/${categorySlug}/${slug}.mdx`}
               target="_blank"
               rel="noopener noreferrer"
             >

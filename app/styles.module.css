@@ -58,6 +58,15 @@ h2 {
   margin-bottom: 2rem;
 }
 
+.categoryHeading {
+  margin: 1rem 0 0.5rem;
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #666;
+}
+
 .recipeItem {
   display: flex;
   align-items: center;
