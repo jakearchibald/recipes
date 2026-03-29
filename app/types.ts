@@ -112,6 +112,7 @@ const unitText: Partial<
   stalk: { singular: ' stalk', plural: ' stalks' },
   serving: { singular: ' serving', plural: ' servings' },
   block: { singular: ' block', plural: ' blocks' },
+  sprig: { singular: ' sprig', plural: ' sprigs' },
 };
 
 export function getUnitText(
