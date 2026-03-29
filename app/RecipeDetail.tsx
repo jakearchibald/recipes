@@ -7,7 +7,16 @@ import IngredientItem from './IngredientItem';
 import RecipeLayout from './RecipeLayout';
 import Ing from './components/Ing';
 
-const mdxComponents = { Ing };
+const mdxComponents = {
+  Ing,
+  // Shift headings
+  h1: 'h3',
+  h2: 'h4',
+  h3: 'h5',
+  h4: 'h6',
+  h5: 'p',
+  h6: 'p',
+} as const;
 
 declare global {
   type MDXProvidedComponents = typeof mdxComponents;

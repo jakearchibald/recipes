@@ -1,6 +1,6 @@
 export const INGREDIENTS = [
-  // Vegetables
   { name: 'Onion', unit: null },
+  { name: 'White onion', unit: null },
   { name: 'Spring onion', unit: null },
   { name: 'Carrot', unit: 'g' },
   { name: 'Red pepper', unit: null },
@@ -10,15 +10,11 @@ export const INGREDIENTS = [
   { name: 'Tomato', unit: null },
   { name: 'Grape tomatoes', unit: 'g' },
   { name: 'Chopped tomatoes', unit: 'g' },
-
-  // Meat & Protein
   { name: 'Chicken', unit: 'g' },
   { name: 'Chicken', unit: 'breast' },
   { name: 'Steak mince', unit: 'g' },
   { name: 'Cumberland sausage meat', unit: 'g' },
   { name: 'Bacon', unit: 'pack' },
-
-  // Cheese & Dairy
   { name: 'Cheese', unit: 'g' },
   { name: 'Halloumi', unit: 'block' },
   { name: 'Philadelphia', unit: 'g' },
@@ -30,17 +26,13 @@ export const INGREDIENTS = [
   { name: 'Mozzarella', unit: 'ball' },
   { name: 'Grated parmesan', unit: null },
   { name: 'Butter', unit: null },
-
-  // Processed meats
+  { name: 'Butter', unit: 'g' },
   { name: 'Chorizo ring', unit: null },
   { name: 'Nduja paste', unit: 'g' },
-
-  // Vegetables & Aromatics
   { name: 'Mushroom', unit: 'g' },
   { name: 'Garlic', unit: 'clove' },
   { name: 'Chillies', unit: null },
-
-  // Herbs & Spices
+  { name: 'Green chillies', unit: null },
   { name: 'Dry thyme', unit: null },
   { name: 'Fresh tarragon', unit: 'pack' },
   { name: 'Mixed herbs', unit: 'tsp' },
@@ -57,13 +49,9 @@ export const INGREDIENTS = [
   { name: 'Mustard powder', unit: 'tsp' },
   { name: 'Pepper', unit: null },
   { name: 'MSG', unit: 'tsp' },
-
-  // Stock
   { name: 'Vegetable stock', unit: 'pot' },
   { name: 'Chicken stock', unit: 'pot' },
   { name: 'Beef stock', unit: 'pot' },
-
-  // Asian ingredients
   { name: 'Galangal paste', unit: 'g' },
   { name: 'Lemongrass', unit: 'stalk' },
   { name: 'Kaffir lime leaves', unit: null },
@@ -73,54 +61,44 @@ export const INGREDIENTS = [
   { name: 'Soy sauce', unit: 'tsp' },
   { name: 'Thai red curry paste', unit: 'g' },
   { name: 'Red curry paste', unit: 'g' },
-
-  // Pasta & Noodles
+  { name: 'Ginger paste', unit: 'tsp' },
+  { name: 'Garam Masala', unit: 'tsp' },
+  { name: 'Coriander powder', unit: 'tsp' },
+  { name: 'Kashmiri Red Chilli Powder', unit: 'tsp' },
+  { name: 'Cumin powder', unit: 'tsp' },
+  { name: 'Turmeric powder', unit: 'tsp' },
   { name: 'Dry egg noodles', unit: 'g' },
   { name: 'Pasta', unit: 'g' },
   { name: 'Tortellini', unit: 'pack' },
-
-  // Rice & Grains
   { name: 'Jasmine rice', unit: 'serving' },
   { name: 'Split red lentils', unit: 'g' },
   { name: 'Kidney beans', unit: 'g' },
-
-  // Sauces & Condiments
   { name: 'Pesto', unit: 'g' },
   { name: 'Sriracha', unit: 'tbsp' },
   { name: 'Tomato puree', unit: 'tbsp' },
   { name: 'Bovril', unit: null },
-
-  // Sweeteners
+  { name: 'Passata', unit: 'tbsp' },
   { name: 'Honey', unit: 'tbsp' },
   { name: 'Honey', unit: null },
   { name: 'Sugar', unit: 'tsp' },
   { name: 'Light brown sugar', unit: 'tbsp' },
   { name: 'Granulated sugar', unit: 'ml' },
-
-  // Citrus
   { name: 'Lime juice', unit: null },
-
-  // Other
   { name: 'Eggs', unit: null },
   { name: 'Chinese curry blocks', unit: 'serving' },
-
-  // Spirits & Liqueurs
   { name: 'Amaretto', unit: 'ml' },
   { name: 'Bourbon', unit: 'ml' },
   { name: 'Whiskey', unit: 'ml' },
   { name: 'Aperol', unit: 'ml' },
-
-  // Wine & Champagne
   { name: 'Prosecco', unit: 'ml' },
-
-  // Mixers & Garnishes
   { name: 'Lemonade', unit: 'ml' },
   { name: 'Lemon juice', unit: 'ml' },
   { name: 'Simple syrup', unit: 'tsp' },
   { name: 'Egg white', unit: 'ml' },
   { name: 'Bitters', unit: null },
-
   { name: 'Water', unit: 'tbsp' },
+  { name: 'Water', unit: 'ml' },
+  { name: 'Yogurt (full fat)', unit: 'tbsp' },
 ] as const satisfies ReadonlyArray<{ name: string; unit: string | null }>;
 
 const unitText: Partial<
