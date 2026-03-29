@@ -62,6 +62,7 @@ export const INGREDIENTS = [
   { name: 'Thai red curry paste', unit: 'g' },
   { name: 'Red curry paste', unit: 'g' },
   { name: 'Ginger paste', unit: 'tsp' },
+  { name: 'Ginger & garlic paste', unit: 'tbsp' },
   { name: 'Garam Masala', unit: 'tsp' },
   { name: 'Coriander powder', unit: 'tsp' },
   { name: 'Kashmiri Red Chilli Powder', unit: 'tsp' },
