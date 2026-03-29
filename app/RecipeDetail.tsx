@@ -4,6 +4,7 @@ import { useEffect, useRef } from 'preact/hooks';
 import { recipes } from './recipes';
 import styles from './styles.module.css';
 import IngredientItem from './IngredientItem';
+import { copyShoppingList } from './copyShoppingList';
 import RecipeLayout from './RecipeLayout';
 import Ing from './components/Ing';
 
@@ -27,7 +28,9 @@ interface RecipeDetailProps {
 }
 
 const RecipeDetail: FunctionalComponent<RecipeDetailProps> = ({ slug }) => {
-  const StepsComponent = useSignal<ComponentType<{ components?: Record<string, ComponentType<any>> }> | null>(null);
+  const StepsComponent = useSignal<ComponentType<{
+    components?: Record<string, ComponentType<any> | string>;
+  }> | null>(null);
   const loading = useSignal<boolean>(true);
   const error = useSignal<string | null>(null);
   const wakeLockEnabled = useSignal<boolean>(false);
@@ -118,6 +121,14 @@ const RecipeDetail: FunctionalComponent<RecipeDetailProps> = ({ slug }) => {
         {recipe.ingredients.map((ingredient) => (
           <IngredientItem key={ingredient.name + ingredient.unit} ingredient={ingredient} />
         ))}
+      </div>
+      <div class={styles.actionButtons}>
+        <button
+          class={`${styles.actionButton} ${styles.copyButton}`}
+          onClick={() => copyShoppingList(recipe.ingredients)}
+        >
+          Copy shopping list
+        </button>
       </div>
 
       <h2>Steps</h2>

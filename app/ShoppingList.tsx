@@ -4,7 +4,7 @@ import { useEffect, useMemo } from 'preact/hooks';
 import { recipes } from './recipes';
 import { loadAppState, saveAppState, clearAppState } from './storage';
 import type { StoredAppState, Ingredient } from './types';
-import { getUnitText } from './types';
+import { copyShoppingList } from './copyShoppingList';
 import styles from './styles.module.css';
 import IngredientItem from './IngredientItem';
 
@@ -101,17 +101,7 @@ const ShoppingList: FunctionalComponent = () => {
     await navigator.clipboard.writeText(items.join('\n'));
   };
 
-  const handleCopy = async () => {
-    const items = shoppingList.value.map((ing) => {
-      if (ing.quantity != null && getUnitText(ing.unit, ing.quantity)) {
-        return `${ing.name} × ${ing.quantity}${getUnitText(ing.unit, ing.quantity)}`;
-      } else if (ing.quantity != null) {
-        return `${ing.name} × ${ing.quantity}`;
-      }
-      return ing.name;
-    });
-    await navigator.clipboard.writeText(items.join('\n'));
-  };
+  const handleCopy = () => copyShoppingList(shoppingList.value);
 
   return (
     <div class={styles.app}>
