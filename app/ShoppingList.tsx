@@ -150,7 +150,7 @@ const ShoppingList: FunctionalComponent = () => {
             const recipe = recipes[recipeSlug];
             return (
               <div key={recipeSlug} class={styles.recipeItem}>
-                <a href={`/recipes/${recipeSlug}`} class={styles.recipeLink}>
+                <a href={`/recipes/${recipeSlug}/`} class={styles.recipeLink}>
                   {recipe.title}
                 </a>
                 <div class={styles.recipeControls}>
@@ -190,7 +190,7 @@ const ShoppingList: FunctionalComponent = () => {
                 return (
                   <div key={recipeSlug} class={styles.selectedItem}>
                     <a
-                      href={`/recipes/${recipeSlug}`}
+                      href={`/recipes/${recipeSlug}/`}
                       class={styles.recipeLink}
                     >
                       {recipe.title}

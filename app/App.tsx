@@ -10,7 +10,7 @@ const App: FunctionalComponent = () => {
   const route = useSignal<Route>({ type: 'home' });
 
   useEffect(() => {
-    const recipePattern = new URLPattern({ pathname: '/recipes/:slug' });
+    const recipePattern = new URLPattern({ pathname: '/recipes/:slug{/}?' });
 
     const updateRoute = () => {
       const url = navigation!.currentEntry!.url!;
@@ -18,6 +18,11 @@ const App: FunctionalComponent = () => {
       // Match /recipes/:slug
       const recipeMatch = recipePattern.exec(url);
       if (recipeMatch) {
+        const parsed = new URL(url);
+        if (!parsed.pathname.endsWith('/')) {
+          navigation!.navigate(parsed.pathname + '/' + parsed.search + parsed.hash, { history: 'replace' });
+          return;
+        }
         route.value = {
           type: 'recipe',
           slug: recipeMatch.pathname.groups.slug as string,
