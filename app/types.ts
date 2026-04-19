@@ -6,6 +6,7 @@ export const INGREDIENTS = [
   { name: 'Red pepper', unit: null },
   { name: 'Parsnip', unit: 'g' },
   { name: 'Courgette', unit: null },
+  { name: 'Courgette', unit: 'g' },
   { name: 'Celery', unit: 'stalk' },
   { name: 'Tomato', unit: null },
   { name: 'Grape tomatoes', unit: 'g' },
@@ -100,6 +101,7 @@ export const INGREDIENTS = [
   { name: 'Water', unit: 'tbsp' },
   { name: 'Water', unit: 'ml' },
   { name: 'Yogurt (full fat)', unit: 'tbsp' },
+  { name: 'Mushroom paste', unit: 'g' },
 ] as const satisfies ReadonlyArray<{ name: string; unit: string | null }>;
 
 const unitText: Partial<
