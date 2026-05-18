@@ -30,7 +30,7 @@ export const INGREDIENTS = [
   { name: 'Butter', unit: 'g' },
   { name: 'Chorizo ring', unit: null },
   { name: 'Chorizo', unit: 'g' },
-  { name: 'Pork sausage', unit: null },
+  { name: 'Silesian sausage', unit: 'g' },
   { name: 'Nduja paste', unit: 'g' },
   { name: 'Mushroom', unit: 'g' },
   { name: 'Garlic', unit: 'clove' },
