@@ -3,6 +3,7 @@ export const INGREDIENTS = [
   { name: 'White onion', unit: null },
   { name: 'Spring onion', unit: null },
   { name: 'Carrot', unit: 'g' },
+  { name: 'Carrot', unit: null },
   { name: 'Red pepper', unit: null },
   { name: 'Parsnip', unit: 'g' },
   { name: 'Courgette', unit: null },
