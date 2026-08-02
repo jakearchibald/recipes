@@ -3,8 +3,9 @@ import { useSignal, useComputed } from '@preact/signals';
 import { useEffect, useMemo } from 'preact/hooks';
 import { recipes, categories } from './recipes';
 import { loadAppState, saveAppState, clearAppState } from './storage';
-import type { StoredAppState, Ingredient } from './types';
+import type { StoredAppState } from './types';
 import { copyShoppingList } from './copyShoppingList';
+import { mergeIngredients, scaleIngredients } from './mergeIngredients';
 import styles from './styles.module.css';
 import IngredientItem from './IngredientItem';
 
@@ -38,34 +39,15 @@ const ShoppingList: FunctionalComponent = () => {
   });
 
   // Compute shopping list
-  const shoppingList = useComputed(() => {
-    const merged = new Map<string, Ingredient>();
-
-    for (const [recipeName, count] of selectedRecipes.value) {
-      const recipe = recipes[recipeName];
-      if (!recipe) continue;
-
-      for (const ingredient of recipe.ingredients) {
-        const key = `${ingredient.name}|${ingredient.unit ?? ''}`;
-        const existing = merged.get(key);
-        if (existing?.quantity != null && ingredient.quantity != null) {
-          merged.set(key, {
-            ...ingredient,
-            quantity: existing.quantity + ingredient.quantity * count,
-          });
-        } else if (!existing) {
-          merged.set(
-            key,
-            ingredient.quantity != null
-              ? { ...ingredient, quantity: ingredient.quantity * count }
-              : ingredient,
-          );
-        }
-      }
-    }
-
-    return [...merged.values()].sort((a, b) => a.name.localeCompare(b.name));
-  });
+  const shoppingList = useComputed(() =>
+    mergeIngredients(
+      [...selectedRecipes.value].flatMap(([recipeName, count]) => {
+        const recipe = recipes[recipeName];
+        if (!recipe) return [];
+        return [...scaleIngredients(recipe.ingredients, count)];
+      }),
+    ),
+  );
 
   const handleFilterChange = (e: Event) => {
     const target = e.target as HTMLInputElement;

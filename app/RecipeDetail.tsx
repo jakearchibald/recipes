@@ -1,10 +1,11 @@
 import type { FunctionalComponent, ComponentType } from 'preact';
 import { useSignal } from '@preact/signals';
-import { useEffect, useRef } from 'preact/hooks';
+import { useEffect, useMemo, useRef } from 'preact/hooks';
 import { recipes } from './recipes';
 import styles from './styles.module.css';
 import IngredientItem from './IngredientItem';
 import { copyShoppingList } from './copyShoppingList';
+import { mergeIngredients } from './mergeIngredients';
 import RecipeLayout from './RecipeLayout';
 import Ing from './components/Ing';
 
@@ -41,6 +42,10 @@ const RecipeDetail: FunctionalComponent<RecipeDetailProps> = ({
   const wakeLockRef = useRef<WakeLockSentinel | null>(null);
 
   const recipe = recipes[slug];
+  const ingredients = useMemo(
+    () => (recipe ? mergeIngredients(recipe.ingredients) : []),
+    [recipe],
+  );
 
   useEffect(() => {
     if (!recipe || !recipe.steps) {
@@ -122,7 +127,7 @@ const RecipeDetail: FunctionalComponent<RecipeDetailProps> = ({
 
       <h2>Ingredients</h2>
       <div class={styles.ingredientList}>
-        {recipe.ingredients.map((ingredient) => (
+        {ingredients.map((ingredient) => (
           <IngredientItem
             key={ingredient.name + ingredient.unit}
             ingredient={ingredient}
@@ -132,7 +137,7 @@ const RecipeDetail: FunctionalComponent<RecipeDetailProps> = ({
       <div class={styles.actionButtons}>
         <button
           class={`${styles.actionButton} ${styles.copyButton}`}
-          onClick={() => copyShoppingList(recipe.ingredients)}
+          onClick={() => copyShoppingList(ingredients)}
         >
           Copy shopping list
         </button>
