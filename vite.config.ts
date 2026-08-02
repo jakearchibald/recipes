@@ -1,9 +1,9 @@
 import { defineConfig } from 'vite';
 import { cloudflare } from '@cloudflare/vite-plugin';
 import preact from '@preact/preset-vite';
-import { markdown } from './lib/vite-plugin-markdown';
+import { markdown } from './lib/vite-plugin-markdown.ts';
 import mdx from '@mdx-js/rollup';
-import { mdxIngredients } from './lib/vite-plugin-mdx-ingredients';
+import { mdxIngredients } from './lib/vite-plugin-mdx-ingredients.ts';
 import remarkFrontmatter from 'remark-frontmatter';
 import remarkMdxFrontmatter from 'remark-mdx-frontmatter';
 

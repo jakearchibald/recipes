@@ -1,5 +1,6 @@
 import type { Plugin } from 'vite';
 import { readFileSync } from 'node:fs';
+import { relative } from 'node:path';
 import { visit } from 'unist-util-visit';
 import { fromMarkdown } from 'mdast-util-from-markdown';
 import { mdxFromMarkdown } from 'mdast-util-mdx';
@@ -8,6 +9,7 @@ import { frontmatter } from 'micromark-extension-frontmatter';
 import { frontmatterFromMarkdown } from 'mdast-util-frontmatter';
 import type { Root } from 'mdast';
 import type { MdxJsxFlowElement, MdxJsxTextElement, MdxJsxAttribute } from 'mdast-util-mdx-jsx';
+import { INGREDIENTS } from '../app/types.ts';
 
 type IngNode = MdxJsxFlowElement | MdxJsxTextElement;
 
@@ -19,7 +21,12 @@ function parseMdx(src: string): Root {
 }
 
 function extractIngredients(tree: Root) {
-  const results: { name: string; quantity: number | null; unit: string | null }[] = [];
+  const results: {
+    name: string;
+    quantity: number | null;
+    unit: string | null;
+    line: number;
+  }[] = [];
 
   visit(tree, (node) => {
     const n = node as IngNode;
@@ -44,12 +51,49 @@ function extractIngredients(tree: Root) {
           name: attrs.name as string,
           quantity: attrs.quantity != null ? Number(attrs.quantity) : null,
           unit: (attrs.unit as string) ?? null,
+          line: n.position?.start.line ?? 0,
         });
       }
     }
   });
 
   return results;
+}
+
+/**
+ * `<Ing>` usage in .mdx is invisible to `tsc` (the `declare module '*.mdx'`
+ * wildcard means the files are never parsed), so validate the name/unit pairs
+ * against INGREDIENTS here instead.
+ */
+export function validateIngredients(
+  filePath: string,
+  ingredients: ReturnType<typeof extractIngredients>,
+): string[] {
+  const errors: string[] = [];
+
+  for (const ing of ingredients) {
+    const byName = INGREDIENTS.filter((def) => def.name === ing.name);
+
+    if (byName.length === 0) {
+      errors.push(
+        `${filePath}:${ing.line}: Unknown ingredient "${ing.name}". Add it to INGREDIENTS in app/types.ts.`,
+      );
+      continue;
+    }
+
+    if (!byName.some((def) => def.unit === ing.unit)) {
+      const valid = byName
+        .map((def) => (def.unit === null ? 'no unit' : `"${def.unit}"`))
+        .join(', ');
+      errors.push(
+        `${filePath}:${ing.line}: Invalid unit ${
+          ing.unit === null ? 'none' : `"${ing.unit}"`
+        } for "${ing.name}". Valid: ${valid}.`,
+      );
+    }
+  }
+
+  return errors;
 }
 
 const META_SUFFIX = '?meta';
@@ -72,7 +116,16 @@ export function mdxIngredients(): Plugin {
       this.addWatchFile(filePath);
       const src = readFileSync(filePath, 'utf-8');
       const tree = parseMdx(src);
-      const ingredients = extractIngredients(tree);
+      const parsed = extractIngredients(tree);
+
+      const errors = validateIngredients(relative(process.cwd(), filePath), parsed);
+      if (errors.length > 0) this.error(errors.join('\n'));
+
+      const ingredients = parsed.map((ing) => ({
+        name: ing.name,
+        quantity: ing.quantity,
+        unit: ing.unit,
+      }));
       let title: string | null = null;
       visit(tree, 'yaml', (node: { value: string }) => {
         const match = /^title:\s*(.+)$/m.exec(node.value);
