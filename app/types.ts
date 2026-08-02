@@ -44,6 +44,7 @@ export const INGREDIENTS = [
   { name: 'Fresh basil', unit: 'pack' },
   { name: 'Rocket', unit: 'pack' },
   { name: 'Coriander', unit: 'sprig' },
+  { name: 'Coriander', unit: 'bag' },
   { name: 'Roasting herbs', unit: 'pack' },
   { name: 'Curry powder', unit: null },
   { name: 'Cumin seeds', unit: 'tsp' },
