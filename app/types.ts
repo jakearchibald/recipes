@@ -5,6 +5,7 @@ export const INGREDIENTS = [
   { name: 'Carrot', unit: 'g' },
   { name: 'Carrot', unit: null },
   { name: 'Red pepper', unit: null },
+  { name: 'Green pepper', unit: null },
   { name: 'Parsnip', unit: 'g' },
   { name: 'Courgette', unit: null },
   { name: 'Courgette', unit: 'g' },
@@ -52,6 +53,10 @@ export const INGREDIENTS = [
   { name: 'Cajun seasoning', unit: null },
   { name: 'Chilli powder', unit: 'tsp' },
   { name: 'Mustard powder', unit: 'tsp' },
+  { name: 'Chinese five-spice powder', unit: 'tsp' },
+  { name: 'Garlic powder', unit: 'tsp' },
+  { name: 'Onion powder', unit: 'tsp' },
+  { name: 'White pepper', unit: 'tsp' },
   { name: 'Pepper', unit: null },
   { name: 'MSG', unit: 'tsp' },
   { name: 'Vegetable stock', unit: 'pot' },
@@ -77,6 +82,7 @@ export const INGREDIENTS = [
   { name: 'Pasta', unit: 'g' },
   { name: 'Tortellini', unit: 'pack' },
   { name: 'Jasmine rice', unit: 'serving' },
+  { name: 'Curly fries', unit: 'bag' },
   { name: 'Split red lentils', unit: 'g' },
   { name: 'Kidney beans', unit: 'g' },
   { name: 'Pesto', unit: 'g' },
@@ -122,6 +128,7 @@ const unitText: Partial<
   serving: { singular: ' serving', plural: ' servings' },
   block: { singular: ' block', plural: ' blocks' },
   sprig: { singular: ' sprig', plural: ' sprigs' },
+  bag: { singular: ' bag', plural: ' bags' },
 };
 
 export function getUnitText(

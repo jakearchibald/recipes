@@ -13,6 +13,31 @@ separate ingredients list at the top — the shopping list is generated from the
 1. Dice <Ing name="Onion" quantity={1} /> and fry for 3 minutes.
 ```
 
+### Split recipes into `# Prepare` and `# Cook`
+
+Recipes open with a `# Prepare` section for everything you can do ahead — the spice
+mix, slicing, chopping, cutting meat — then a `# Cook` section for the steps done at
+the hob. This keeps the cooking steps short enough to follow while a pan is hot,
+instead of stopping mid-stir-fry to slice an onion.
+
+Tag each `<Ing>` in the Prepare step that first handles it, and refer back to it by
+name in Cook:
+
+```mdx
+# Prepare
+
+1. Slice <Ing name="White onion" quantity={1} /> into half-moons.
+
+# Cook
+
+1. Heat oil, then add the onion.
+```
+
+Prep steps that are really unattended cooking — roasting, baking a bag of fries — stay
+in Cook, since you want them started early and running while you do everything else.
+See [spice-bag-fries.mdx](app/recipes/meals/spice-bag-fries.mdx) and
+[masala-chicken.mdx](app/recipes/meals/masala-chicken.mdx).
+
 ### Repeat `<Ing>` for separate instances of the same ingredient
 
 If an ingredient is used at two different points, tag it at **both** points with the
@@ -31,6 +56,10 @@ harder to follow. See [seriously-garlic-chicken-soup.mdx](app/recipes/soups/seri
 
 Note the merge only sums when both instances share a unit. `Carrot` with `unit="g"`
 and `Carrot` with no unit are separate lines, by design.
+
+This is about an ingredient used in two separate *quantities* at two points. It
+doesn't apply to a Prepare step feeding a Cook step — that's one quantity handled
+once, so tag it in Prepare and refer back by name.
 
 ### Ingredient names are a fixed list
 
