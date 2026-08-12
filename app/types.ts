@@ -98,6 +98,7 @@ export const INGREDIENTS = [
   { name: 'Light brown sugar', unit: 'tbsp' },
   { name: 'Granulated sugar', unit: 'ml' },
   { name: 'Lime juice', unit: null },
+  { name: 'Lime juice', unit: 'tbsp' },
   { name: 'Eggs', unit: null },
   { name: 'Chinese curry blocks', unit: 'serving' },
   { name: 'Amaretto', unit: 'ml' },
