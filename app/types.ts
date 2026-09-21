@@ -97,6 +97,7 @@ export const INGREDIENTS = [
   { name: 'Panko breadcrumbs', unit: 'tbsp' },
   { name: 'Tortellini', unit: 'pack' },
   { name: 'Jasmine rice', unit: 'serving' },
+  { name: 'Cooked rice', unit: 'g' },
   { name: 'Curly fries', unit: 'bag' },
   { name: 'Split red lentils', unit: 'g' },
   { name: 'Kidney beans', unit: 'g' },
