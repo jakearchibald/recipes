@@ -3,6 +3,7 @@ import { useSignal } from '@preact/signals';
 import { useEffect } from 'preact/hooks';
 import ShoppingList from './ShoppingList';
 import RecipeDetail from './RecipeDetail';
+import { recipes } from './recipes';
 
 type Route =
   | { type: 'home' }
@@ -63,6 +64,13 @@ const App: FunctionalComponent = () => {
       navigation!.removeEventListener('navigate', handleNavigate);
     };
   }, []);
+
+  useEffect(() => {
+    const recipe =
+      route.value.type === 'recipe' ? recipes[route.value.slug] : null;
+
+    document.title = recipe ? `${recipe.title} — Recipes` : 'Recipes';
+  }, [route.value]);
 
   // Render based on route
   if (route.value.type === 'recipe') {
